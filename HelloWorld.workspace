@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeLite_Workspace Name="HelloWorld">
+	<Project Name="HelloWorld" Path="HelloWorld.project" Active="No"/>
+	<BuildMatrix>
+		<WorkspaceConfiguration Name="debug" Selected="yes">
+			<Project Name="HelloWorld" ConfigName="debug"/>
+		</WorkspaceConfiguration>
+	</BuildMatrix>
+</CodeLite_Workspace>
