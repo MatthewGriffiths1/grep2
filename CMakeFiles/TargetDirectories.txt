@@ -1,3 +1,0 @@
-/home/matt/dev/HelloWorld/CMakeFiles/HellowWorld.dir
-/home/matt/dev/HelloWorld/CMakeFiles/edit_cache.dir
-/home/matt/dev/HelloWorld/CMakeFiles/rebuild_cache.dir
