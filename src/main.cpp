@@ -13,7 +13,6 @@ int main(int argc, char* argv[]) {
 
 	Args args;
 	string file = argv[argc - 1];
-	stringstream result;
 	regex regEx;
 	string pattern;
 	vector<string> files = {};
@@ -47,14 +46,21 @@ int main(int argc, char* argv[]) {
 	{
 		ifstream input;
 		input.open(*i);
+		stringstream result;
 		int count = 0;
+		int lineNo = 0;
 		if (input.is_open()) {
 			string line;
 			while (getline(input, line)) {
 				if (regex_search(line, regEx)) {
 					count++;
-					result << line << endl;
+					if (args.displayLineNumbers) {
+						result << lineNo << ": " << line << endl;
+					} else {
+						result << line << endl;
+					}
 				}
+				lineNo++;
 			}
 			input.close();
 		}
