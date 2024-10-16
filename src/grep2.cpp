@@ -5,6 +5,8 @@
 
 #include "../headers/grep2.h"
 #include <cstdlib>
+#include <sstream>
+#include <vector> 
 
 using namespace std;
 
@@ -42,4 +44,9 @@ void Args::setFlag(char flag) {
 			break;
 	}
 			
+}
+
+Result::Result() {
+	count = 0;
+
 }

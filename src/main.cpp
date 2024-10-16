@@ -16,6 +16,7 @@ int main(int argc, char* argv[]) {
 	regex regEx;
 	string pattern;
 	vector<string> files = {};
+	Result result;
 
 	if (argc < 3) {
 		cerr << "Expected two arguements" << endl;
@@ -47,13 +48,12 @@ int main(int argc, char* argv[]) {
 		ifstream input;
 		input.open(*i);
 		stringstream result;
-		int count = 0;
 		int lineNo = 0;
 		if (input.is_open()) {
 			string line;
 			while (getline(input, line)) {
 				if (regex_search(line, regEx)) {
-					count++;
+					result.count++;
 					if (args.displayLineNumbers) {
 						result << lineNo << ": " << line << endl;
 					} else {
@@ -64,14 +64,37 @@ int main(int argc, char* argv[]) {
 			}
 			input.close();
 		}
-		if (args.displayCount) {
-			cout << count << endl;
-		} else if (args.fileNamesOnly && count > 0) {
-		       cout << *i << endl; 
-		} else if (!(args.displayCount || args.fileNamesOnly)) {
-			cout << result.str();
-		}
 	}
+
+	if (args.displayCount) {
+		cout << result.count << endl;
+	} else if (args.fileNamesOnly && result.count > 0) {
+	       cout << result.fileNames << endl; 
+	} else if (!(args.displayCount || args.fileNamesOnly)) {
+		cout << result.matches.str();
+	}
+
 	return 0;
 }
 
+void search(string file, Result result, Args args) {
+
+	ifstream input;
+	input.open(*i);
+	if (input.is_open()) {
+		string line;
+		int lineNo = 0;
+		while (getline(input, line)) {
+			if (regex_search(line, regEx)) {
+				result.count++;
+				if (args.displayLineNumbers) {
+					result << lineNo << ": " << line << endl;
+				} else {
+					result << line << endl;
+				}
+			}
+			lineNo++;
+		}
+		input.close();
+	}
+}

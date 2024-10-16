@@ -6,6 +6,10 @@
 #ifndef grep2_h
 #define grep2_h
 
+#include <sstream>
+#include <vector>
+
+using namespace std;
 
 class Args {
 	public:
@@ -17,6 +21,14 @@ class Args {
 		bool matchWholeWord;
 		Args();
 		void setFlag(char flag);
+};
+
+class Result {
+	public:
+	      	int count;
+		stringstream matches;
+		vector<string> fileNames;
+		Result();
 };
 #endif
 
