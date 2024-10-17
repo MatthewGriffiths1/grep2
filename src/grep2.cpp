@@ -7,6 +7,7 @@
 #include <cstdlib>
 #include <sstream>
 #include <vector> 
+#include <iostream>
 
 using namespace std;
 
@@ -49,4 +50,10 @@ void Args::setFlag(char flag) {
 Result::Result() {
 	count = 0;
 
+}
+
+void Result::getFileNames() {
+	for (string file: fileNames) {
+		cout << file << endl;
+	}
 }

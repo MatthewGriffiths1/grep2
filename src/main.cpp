@@ -8,6 +8,7 @@
 
 using namespace std;
 
+void match(regex regEx, ifstream &input, Result &result, Args &args);
 
 int main(int argc, char* argv[]) {
 
@@ -23,7 +24,7 @@ int main(int argc, char* argv[]) {
 		return 1;
 	}
 
-	// get flags, files, and pattern
+	// Assign flags and patterns
 	for (int i = 1; i < argc; i++) {
 		if (argv[i][0] == '-') {
 			args.setFlag(argv[i][1]);	
@@ -35,41 +36,35 @@ int main(int argc, char* argv[]) {
 				pattern = argv[i];		
 			}
 		}
-	}
-		
+	}		
 	if (args.ignoreCasing) {
 		regEx.assign(pattern, regex_constants::icase);
 	} else {
 		regEx.assign(pattern);
 	}
 
+	// Loop through files and search
 	for (vector<string>::iterator i = files.begin(); i != files.end(); i++) 
 	{
 		ifstream input;
 		input.open(*i);
-		stringstream result;
 		int lineNo = 0;
+		int startCount = result.count;
 		if (input.is_open()) {
-			string line;
-			while (getline(input, line)) {
-				if (regex_search(line, regEx)) {
-					result.count++;
-					if (args.displayLineNumbers) {
-						result << lineNo << ": " << line << endl;
-					} else {
-						result << line << endl;
-					}
-				}
-				lineNo++;
-			}
-			input.close();
+			match(regEx, input, result, args);
+		}
+		input.close();
+
+		if (startCount < result.count) {
+			result.fileNames.push_back(*i);
 		}
 	}
-
+	
+	// Output result
 	if (args.displayCount) {
 		cout << result.count << endl;
 	} else if (args.fileNamesOnly && result.count > 0) {
-	       cout << result.fileNames << endl; 
+		result.getFileNames();
 	} else if (!(args.displayCount || args.fileNamesOnly)) {
 		cout << result.matches.str();
 	}
@@ -77,24 +72,20 @@ int main(int argc, char* argv[]) {
 	return 0;
 }
 
-void search(string file, Result result, Args args) {
+void match(regex regEx, ifstream &input, Result &result, Args &args) {
+	string line;
+	int lineNo = 0;
 
-	ifstream input;
-	input.open(*i);
-	if (input.is_open()) {
-		string line;
-		int lineNo = 0;
-		while (getline(input, line)) {
-			if (regex_search(line, regEx)) {
-				result.count++;
-				if (args.displayLineNumbers) {
-					result << lineNo << ": " << line << endl;
-				} else {
-					result << line << endl;
-				}
+	while (getline(input, line)) {
+		if (regex_search(line, regEx)) {
+			result.count++;
+			if (args.displayLineNumbers) {
+				result.matches << lineNo << ": " << line << endl;
+			} else {
+				result.matches << line << endl;
 			}
-			lineNo++;
 		}
-		input.close();
+		lineNo++;
 	}
+
 }

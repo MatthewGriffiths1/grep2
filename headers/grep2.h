@@ -29,6 +29,7 @@ class Result {
 		stringstream matches;
 		vector<string> fileNames;
 		Result();
+		void getFileNames();
 };
 #endif
 
