@@ -75,9 +75,10 @@ int main(int argc, char* argv[]) {
 void match(regex regEx, ifstream &input, Result &result, Args &args) {
 	string line;
 	int lineNo = 0;
-
+	
 	while (getline(input, line)) {
-		if (regex_search(line, regEx)) {
+		bool regexMatch = regex_search(line, regEx);
+		if (regexMatch ^ args.invertMatch) {
 			result.count++;
 			if (args.displayLineNumbers) {
 				result.matches << lineNo << ": " << line << endl;
