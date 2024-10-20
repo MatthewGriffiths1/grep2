@@ -13,11 +13,10 @@ void match(regex regEx, ifstream &input, Result &result, Args &args);
 int main(int argc, char* argv[]) {
 
 	Args args;
-	string file = argv[argc - 1];
 	regex regEx;
-	string pattern;
 	vector<string> files = {};
 	Result result;
+	string pattern;
 
 	if (argc < 3) {
 		cerr << "Expected two arguements" << endl;
@@ -36,7 +35,12 @@ int main(int argc, char* argv[]) {
 				pattern = argv[i];		
 			}
 		}
-	}		
+	}	
+
+	if (args.matchWholeWord) {
+		pattern = "\\b" + pattern + "\\b";	
+	}
+
 	if (args.ignoreCasing) {
 		regEx.assign(pattern, regex_constants::icase);
 	} else {
