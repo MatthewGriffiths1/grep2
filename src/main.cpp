@@ -5,10 +5,12 @@
 #include <sstream>
 #include "../headers/grep2.h"
 #include <vector> 
+#include <filesystem>
 
 using namespace std;
 
 void match(regex regEx, ifstream &input, Result &result, Args &args);
+bool checkFileExists(string fileName);
 
 int main(int argc, char* argv[]) {
 
@@ -28,8 +30,7 @@ int main(int argc, char* argv[]) {
 		if (argv[i][0] == '-') {
 			args.setFlag(argv[i][1]);	
 		} else {
-			ifstream testFile(argv[i]);
-			if (testFile.good()) { // Arg is a file
+			if (!filesystem::is_directory(argv[i]) && filesystem::exists(argv[i])) { // Arg is a file
 				files.push_back(argv[i]);
 			} else { // Arg is a pattern
 				pattern = argv[i];		
@@ -78,7 +79,7 @@ int main(int argc, char* argv[]) {
 
 void match(regex regEx, ifstream &input, Result &result, Args &args) {
 	string line;
-	int lineNo = 0;
+	int lineNo = 1;
 	
 	while (getline(input, line)) {
 		bool regexMatch = regex_search(line, regEx);
@@ -93,4 +94,14 @@ void match(regex regEx, ifstream &input, Result &result, Args &args) {
 		lineNo++;
 	}
 
+}
+
+bool checkFileExists(string fileName) {
+	ifstream input;
+	input.open(fileName);
+	if (!input.fail()) {
+		input.close();
+		return true;
+	}
+	return false;
 }
