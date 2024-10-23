@@ -6,5 +6,5 @@ file(GLOB SOURCES "src/*.cpp")
 add_executable(grep2 ${SOURCES})
 add_executable(test_cpp "test/test.cpp")
 
-add_test(NAME test_0, COMMAND $<TARGET_FILE:test_cpp>)
+add_test(NAME tests, COMMAND $<TARGET_FILE:test_cpp> "grep2" "../test/mockTestFile.txt")
 
